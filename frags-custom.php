@@ -22,3 +22,19 @@ function frags_add_typekit(){
 		echo '<link rel="stylesheet" href="https://use.typekit.net/bmc0efd.css"><style>.wp-block-site-title a { font-family: bitcount-prop-double-square, sans-serif; font-weight: 500; font-style: normal; }</style>';
 	}
 };
+
+function add_loginout_block_to_primary_navigation( $hooked_block_types, $relative_position, $anchor_block_type, $context ) {
+
+	// Is $context a Navigation menu?
+	if ( ! $context instanceof WP_Post || 'wp_navigation' !== $context->post_type ) {
+		return $hooked_block_types;
+	}
+	
+	if ( 'last_child' === $relative_position && 'core/navigation' === $anchor_block_type ) {
+		$hooked_block_types[] = 'core/loginout';
+	}
+
+	return $hooked_block_types;
+}
+add_filter( 'hooked_block_types', 'add_loginout_block_to_primary_navigation', 10, 4 );
+
