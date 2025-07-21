@@ -14,3 +14,11 @@
  * Text Domain:       frags-custom
  */
 
+
+add_action('wp_head', 'frags_add_typekit');
+
+function frags_add_typekit(){
+	if ( ! is_admin() ) { 
+		echo '<link rel="stylesheet" href="https://use.typekit.net/bmc0efd.css">';
+	}
+};
