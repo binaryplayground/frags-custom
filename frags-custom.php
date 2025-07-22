@@ -23,18 +23,30 @@ function frags_add_typekit(){
 	}
 };
 
-function add_loginout_block_to_primary_navigation( $hooked_block_types, $relative_position, $anchor_block_type, $context ) {
-
-	// Is $context a Navigation menu?
-	if ( ! $context instanceof WP_Post || 'wp_navigation' !== $context->post_type ) {
-		return $hooked_block_types;
-	}
-	
-	if ( 'last_child' === $relative_position && 'core/navigation' === $anchor_block_type ) {
-		$hooked_block_types[] = 'core/loginout';
-	}
-
-	return $hooked_block_types;
+/**
+ * Changes the logo title (hover text)
+ */
+function frags_login_logo_url_title() {
+    return get_bloginfo( 'name' );
 }
-//add_filter( 'hooked_block_types', 'add_loginout_block_to_primary_navigation', 10, 4 );
+add_filter( 'login_headertext', 'frags_login_logo_url_title' );
 
+/**
+ * Changes the logo URL to the website's homepage
+ */
+function frags_login_logo_url() {
+    return get_bloginfo( 'wpurl' );
+}
+add_filter( 'login_headerurl', 'frags_login_logo_url' );
+
+/**
+ * Change login logo
+ */
+function frags_login_logo() { ?>
+    <style type="text/css">
+        #login h1 a {
+            background-image: url(<?php echo esc_url( plugins_url( 'assets/logo.png', __FILE__ ) )  ?>); !important;
+        }
+    </style>
+<?php }
+add_action( 'login_enqueue_scripts', 'frags_login_logo' );
